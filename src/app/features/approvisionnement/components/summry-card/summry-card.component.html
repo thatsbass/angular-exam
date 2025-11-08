@@ -2,7 +2,7 @@
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
           <div class="bg-white p-6 rounded-lg shadow-sm">
             <p class="text-sm text-gray-500">Total des approvisionnements</p>
-            <p class="text-3xl font-bold text-blue-600 mt-2">{{ formatCurrency(summary().totalApprovisionnements) }}</p>
+            <p class="text-3xl font-bold text-blue-600 mt-2">{{ summary().totalApprovisionnements | currencyFormat }}</p>
             <p class="text-sm text-gray-400 mt-2">Période: Avril 2023</p>
           </div>
           <div class="bg-white p-6 rounded-lg shadow-sm">
@@ -14,6 +14,6 @@
             <p class="text-sm text-gray-500">Fournisseur principal</p>
             <p class="text-3xl font-bold text-blue-600 mt-2">{{ summary().principalSupplier?.name || 'N/A' }}</p>
             <p class="text-sm text-gray-400 mt-2">Période: Avril 2023</p>
-            <p class="text-sm text-gray-500 mt-1">{{ formatCurrency(1430000) }} (52.5%)</p>
+            <p class="text-sm text-gray-500 mt-1">{{ 1430000 | currencyFormat }} (52.5%)</p>
           </div>
       </div>

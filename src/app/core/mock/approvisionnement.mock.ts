@@ -1,5 +1,5 @@
 
-import { Supply, Supplier, Article, SupplyStatus } from './model';
+import { Supply, Supplier, Article, SupplyStatus } from '../models/aprovisionnement.model';
 
 export const SUPPLIERS: Supplier[] = [
   { id: '1', name: 'Textiles Dakar SARL' },

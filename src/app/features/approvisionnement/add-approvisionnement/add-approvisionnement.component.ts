@@ -1,16 +1,17 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
-import { IconComponent } from '../../icon/icon.component';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ARTICLES, SUPPLIERS } from '../../models/mock';
 import { Subscription } from 'rxjs';
+import { IconComponent } from '../../../shared/icon/icon.component';
+import { CurrencyFormatPipe } from '../../../core/pipes/currency-format.pipe';
+import { ARTICLES, SUPPLIERS } from '../../../core/mock/approvisionnement.mock';
 
 
 @Component({
   selector: 'app-add-approvisionnement',
-  imports: [CommonModule, ReactiveFormsModule, RouterLink, IconComponent],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, IconComponent, CurrencyFormatPipe],
   templateUrl: './add-approvisionnement.component.html',
   styleUrl: './add-approvisionnement.component.css'
 })
@@ -66,10 +67,6 @@ export class AddApprovisionnementComponent implements OnInit, OnDestroy {
     this.items.push(articleForm);
   }
   
-  formatCurrency(amount: number): string {
-    return new Intl.NumberFormat('fr-FR').format(amount || 0);
-  }
-
   onSubmit(): void {
     if (this.form.valid) {
       console.log('Form Submitted', this.form.getRawValue());

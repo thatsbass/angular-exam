@@ -1,8 +1,10 @@
 import { Component, computed, input } from '@angular/core';
-import { Summary } from '../../../models/model';
+import { Summary } from '../../../../core/models/aprovisionnement.model';
+import { CurrencyFormatPipe } from '../../../../core/pipes/currency-format.pipe';
 
 @Component({
   selector: 'app-summry-card',
+  imports: [CurrencyFormatPipe],
   templateUrl: './summry-card.component.html',
 })
 export class SummryCardComponent {
@@ -14,10 +16,6 @@ export class SummryCardComponent {
     }
    ) 
 
-   summary = computed(() => this.summaryData());
    
-    formatCurrency(amount: number): string {
-        return new Intl.NumberFormat('fr-FR').format(amount) + ' FCFA';
-    }
-
+   summary = computed(() => this.summaryData());
 }
