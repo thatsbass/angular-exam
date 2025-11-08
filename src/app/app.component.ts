@@ -20,7 +20,7 @@ export class AppComponent implements OnInit, OnDestroy {
         this.routerSubscription = this.router.events.pipe(
             filter(event => event instanceof NavigationEnd)
         ).subscribe((event: NavigationEnd) => {
-            this.showAddButton = event.url === '/supplies' || event.urlAfterRedirects === '/supplies';
+            this.showAddButton = event.url === '/approvisionnement' || event.urlAfterRedirects === '/approvisionnement';
         });
     }
 
