@@ -1,1 +1,103 @@
-<p>add-approvisionnement works!</p>
+  <div class="p-4 sm:p-6 lg:p-8">
+      <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold text-gray-800">Nouvel approvisionnement</h1>
+        <a routerLink="/supplies" class="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100 transition">
+          <app-icon name="arrow-left" class="w-4 h-4" />
+          <span>Retour à la liste</span>
+        </a>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="bg-white p-6 rounded-lg shadow-sm">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-6">
+          <!-- General Information -->
+          <div class="flex flex-col space-y-6">
+            <h2 class="text-lg font-semibold text-gray-700 border-b pb-2">Informations générales</h2>
+            <div>
+              <label for="supplyDate" class="block text-sm font-medium text-gray-700 mb-1">Date d'approvisionnement</label>
+              <div class="relative">
+                <input id="supplyDate" type="text" formControlName="date" readonly class="w-full pl-4 pr-10 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50" />
+                <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                  <app-icon name="calendar" class="text-gray-400 w-5 h-5" />
+                </div>
+              </div>
+            </div>
+            <div>
+              <label for="supplier" class="block text-sm font-medium text-gray-700 mb-1">Fournisseur</label>
+              <div class="relative">
+                <select id="supplier" formControlName="supplierId" class="w-full appearance-none bg-white pl-4 pr-10 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  <option value="" disabled>Sélectionner un fournisseur</option>
+                  @for (s of suppliers; track s.id) {
+                    <option [value]="s.id">{{s.name}}</option>
+                  }
+                </select>
+                <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                  <app-icon name="chevron-down" class="text-gray-400 w-5 h-5" />
+                </div>
+              </div>
+            </div>
+            <div>
+              <label for="reference" class="block text-sm font-medium text-gray-700 mb-1">Référence</label>
+              <input id="reference" type="text" formControlName="reference" placeholder="Référence de l'approvisionnement" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+            <div>
+              <label for="observations" class="block text-sm font-medium text-gray-700 mb-1">Observations</label>
+              <textarea id="observations" formControlName="observations" rows="4" placeholder="Observations ou commentaires sur cet approvisionnement" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+            </div>
+          </div>
+
+          <!-- Supply Details -->
+          <div class="flex flex-col space-y-6">
+            <h2 class="text-lg font-semibold text-gray-700 border-b pb-2">Détails de l'approvisionnement</h2>
+            <div formArrayName="items">
+              @for (item of items.controls; track $index) {
+                <div [formGroupName]="$index" class="space-y-4 p-4 border rounded-md mb-4">
+                  <div>
+                    <label [for]="'article-' + $index" class="block text-sm font-medium text-gray-700 mb-1">Article</label>
+                    <div class="relative">
+                      <select [id]="'article-' + $index" formControlName="articleId" class="w-full appearance-none bg-white pl-4 pr-10 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="" disabled>Sélectionner un article</option>
+                         @for (a of articles; track a.id) {
+                          <option [value]="a.id">{{a.name}}</option>
+                         }
+                      </select>
+                      <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                        <app-icon name="chevron-down" class="text-gray-400 w-5 h-5" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="grid grid-cols-2 gap-4">
+                    <div>
+                      <label [for]="'quantity-' + $index" class="block text-sm font-medium text-gray-700 mb-1">Quantité</label>
+                      <input [id]="'quantity-' + $index" type="number" formControlName="quantity" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    </div>
+                    <div>
+                      <label [for]="'unitPrice-' + $index" class="block text-sm font-medium text-gray-700 mb-1">Prix unitaire (FCFA)</label>
+                      <input [id]="'unitPrice-' + $index" type="number" formControlName="unitPrice" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    </div>
+                  </div>
+                  <div>
+                    <label [for]="'totalAmount-' + $index" class="block text-sm font-medium text-gray-700 mb-1">Montant total (FCFA)</label>
+                    <input [id]="'totalAmount-' + $index" type="text" [value]="formatCurrency(item.get('total')?.value)" readonly class="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-50" />
+                  </div>
+                </div>
+              }
+            </div>
+            <div>
+              <button type="button" (click)="addArticle()" class="px-4 py-2 border border-blue-500 text-blue-600 rounded-md text-sm font-medium hover:bg-blue-50 transition">
+                + Ajouter un autre article
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="mt-8 pt-6 border-t flex justify-end space-x-3">
+          <a routerLink="/supplies" class="px-6 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100 transition">
+            Annuler
+          </a>
+          <button type="submit" [disabled]="form.invalid" class="px-6 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 transition disabled:bg-blue-300">
+            Enregistrer l'approvisionnement
+          </button>
+        </div>
+      </form>
+    </div>
